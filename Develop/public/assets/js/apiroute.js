@@ -1,6 +1,5 @@
 const path = require("path");
 const fs = require("fs");
-const app = require("./server");
 const uniqid = require("uniqid");
 
 module.exports = function (app) {

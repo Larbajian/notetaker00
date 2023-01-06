@@ -1,20 +1,25 @@
-const express = require("express");
-const path = require("path");
+const express = require('express');
+const path = require('path');
+const api = require('./routes/index.js');
 
-//for expressapp
+const PORT = 3001;
+
 const app = express();
-const PORT = process.env.PORT || 3001;
 
-//parsing data
-app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use('/api', api);
+
 app.use(express.static('public'));
 
-require("./routes/apiroutes")(app);
-require("./routes/htmlroutes")(app);
+app.get('/', (req, res) =>
+  res.sendFile(path.join(__dirname, '/public/index.html'))
+);
 
-app.listen(PORT, function() {
-  console.log("App listening to: " + PORT);
-});
+app.get('/feedback', (req, res) =>
+  res.sendFile(path.join(__dirname, '/public/pages/feedback.html'))
+);
 
-module.exports = app;
+app.listen(PORT, () =>
+  console.log(`App listening at http://localhost:${PORT} 🚀`)
+);
