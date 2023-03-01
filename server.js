@@ -43,7 +43,8 @@ app.post('/api/notes', (req,res) =>{
       status: 'note posted!',
       body: newNote,
   };
-  res.json(response);
+  //res.json(response);
+  res.sendFile(path.join(__dirname, '/public/notes.html'))
   } else {
   res.json('note was not posted')
 }
