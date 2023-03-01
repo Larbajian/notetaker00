@@ -33,7 +33,7 @@ const getNotes = () =>
     },
   });
 
-const saveNote = (note) =>
+const saveNote = (newNote) =>
   fetch('/api/notes', {
     method: 'POST',
     headers: {
