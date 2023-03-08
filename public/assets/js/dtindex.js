@@ -42,8 +42,8 @@ const saveNote = (newNote) =>
     body: JSON.stringify(newNote),
   });
 
-const deleteNote = (noteId) =>
-  fetch(`/api/notes/${noteId}`, {
+const deleteNote = (note_id) =>
+  fetch('/api/notes/:note_id', {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ const deleteNote = (noteId) =>
   });
 
 const renderActiveNote = () => {
-  hide(saveNoteBtn);
+  show(saveNoteBtn);
 
   if (activeNote.note_id) {
     noteTitle.setAttribute('readonly', true);
@@ -68,8 +68,8 @@ const renderActiveNote = () => {
 
 const handleNoteSave = () => {
   const newNote = {
-    title: noteTitle.value,
-    text: noteText.value,
+    title: title.value,
+    text: text.value,
   };
   saveNote(newNote).then(() => {
     getAndRenderNotes();
@@ -117,8 +117,8 @@ const handleRenderSaveBtn = () => {
 };
 
 // Render the list of note titles
-const renderNoteList = async (notes) => {
-  let jsonNotes = await notes.json();
+const renderNoteList = async (notesArray) => {
+  let jsonNotes = await notesArray.json();
   if (window.location.pathname === '/notes') {
     noteList.forEach((el) => (el.innerHTML = ''));
   }
