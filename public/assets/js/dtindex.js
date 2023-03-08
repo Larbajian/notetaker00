@@ -39,11 +39,11 @@ const saveNote = (newNote) =>
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(note),
+    body: JSON.stringify(newNote),
   });
 
-const deleteNote = (note_id) =>
-  fetch(`/api/notes/${note_id}`, {
+const deleteNote = (noteId) =>
+  fetch(`/api/notes/${noteId}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
