@@ -31,7 +31,7 @@ body {
 }
 
 .note-title {
-  height: 70px;
+  height: 50px;
   margin-top: 13px;
   font-size: 3rem;
 }
@@ -58,11 +58,6 @@ body {
   border-top: none;
   border-top-right-radius: 0;
   border-top-left-radius: 0;
-}
-
-.list-item-title {
-  display: inline-block;
-  width: 75%;
 }
 
 .list-container i {

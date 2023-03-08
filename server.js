@@ -1,8 +1,11 @@
 const express = require('express');
 const path = require('path');
-const api = require('./routes/index.js');
-const { v4: uuidv4 } = require('uuid');
 const { readAndAppend, readFromFile, writeToFile } = require('./helpers/fsUtils.js');
+const fs = require('fs');
+const uniqid = require('uniqid');
+let noteData = fs.readFileSync('./db/notes.json');
+
+let db = JSON.parse(noteData);
 
 
 // setup port //
@@ -34,17 +37,11 @@ app.post('/api/notes', (req,res) =>{
       const newNote = {
           title,
           text,
-          note_id: uuidv4(),
+          id : uniqid()
       };
-
-  readAndAppend(newNote, './db/notes.json');
-
-  const response = {
-      status: 'note posted!',
-      body: newNote,
-  };
-  res.json(response);
-  } else {
+  db.push(newNote);
+  res.json(newNote);
+    } else {
   res.json('note was not posted');
 }
   
@@ -52,25 +49,22 @@ app.post('/api/notes', (req,res) =>{
 
 //GET NOTES (API)
 app.get('/api/notes', (req,res) => {
-  readFromFile('./db/notes.json').then((data) =>
-  res.json(JSON.parse(data))
-  );
+res.json(db);
 });
 
 //DELETE NOTES (API)
-app.delete('/:note_id', (req,res) => {
-  const noteId = req.params.note_id;
-  readFromFile('./db/notes.json')
-      .then((data) => JSON.parse(data))
-      .then((json) => {
-          const notesArray = json.filter((note) => note.note_id !== noteId);
-          writeToFile('./db/notes.json', notesArray);
+app.delete("/api/notes/:id", (req, res) => {
+  const noteToDelete = req.params.id;
 
-          res.json(`Note with this id has been deleted.`);
-      });
+  const notesArray = db.filter((note) => note.id !== noteToDelete);
+  db = notesArray; 
+  fs.writeFile("./db/notes.json", JSON.stringify(db), (err) => {
+    err ? console.log('error') : console.log('deleted');
+  });
+  res.json(notesArray);
+  });
 
 
-});
 ////////////////////////////////////////////////
 
 app.listen(PORT, () =>
